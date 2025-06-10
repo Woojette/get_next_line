@@ -16,24 +16,51 @@ int ft_check(char *str)
 
 char    *get_next_line(int fd)
 {
-    int     readfd;
+    int     fdread;
     char    *charread;
     char    *temp;
-    static char    *str;
+    char    **spl;
+    static char *str;
+
+    charread = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+    if (charread == NULL)
+        return (NULL);
+    fdread = read(fd, charread, BUFFER_SIZE);    
+    str = "";
+    temp = str;
+    while (fdread > 0)
+    {
+        charread[fdread] = '\0';
+        temp = ft_strjoin(str, charread);
+        str = temp;
+        if (ft_check(str) == 1)
+        {
+            spl =  ft_split_n(str, '\n');
+            return (spl[0]);
+        }
+        fdread = read(fd, charread, BUFFER_SIZE);
+    }
+    return (str);
+}
+
+int main(void)
+{
+    int     fd;
+    char    *str;
 
     fd = open("texte.txt", O_RDONLY);
     if (fd == -1)
-        write(1, "erreur\n", 1);
-    charread = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-    readfd = read(fd, charread, BUFFER_SIZE);
-    str = "";
-    temp = ft_strjoin(str, charread);
-    free(temp);
-    while (readfd > 0)
-    {
-        charread[readfd] = '\0';
-        if (ft_check(str) == 1)
-            break ;
-    }
-    return (str);
+        write(1, "Erreur\n", 7);
+    str = get_next_line(fd);
+    printf("1 %s", str);
+    str = get_next_line(fd);
+    printf("2 %s", str);
+    str = get_next_line(fd);
+    printf("3 %s", str);
+    str = get_next_line(fd);
+    printf("4 %s", str);
+    str = get_next_line(fd);
+    printf("5 %s", str);
+    free(str);
+    return (0);
 }

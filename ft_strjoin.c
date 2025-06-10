@@ -9,18 +9,18 @@ char    *ft_strjoin(char const *s1, char const *s2)
 
     i = 0;
     j = 0;
-    len = ft_strlen(s1) + ft_strlen(s2);
+    len = ft_strlen((char *)s1) + ft_strlen((char *)s2);
     resultat = malloc(sizeof(char) * (len + 1));
     if (resultat == NULL)
         return (NULL);
     while (s1[i] != '\0')
     {
-        resultat[i] = s1[i];
+        resultat[i + j] = s1[i];
         i++;
     }
     while (s2[j] != '\0')
     {
-        resultat[j] = s2[j];
+        resultat[i + j] = s2[j];
         j++;
     }
     resultat[i + j] = '\0';
