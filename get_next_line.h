@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wooyang <wooyang@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/11 14:46:29 by wooyang           #+#    #+#             */
+/*   Updated: 2025/06/11 14:51:43 by wooyang          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
@@ -10,15 +22,14 @@
 # include <limits.h>
 
 # ifndef BUFFER_SIZE
-#   define BUFFER_SIZE 1
+#  define BUFFER_SIZE 10
 # endif
 
-char *get_next_line(int fd);
-char *ft_strjoin(char const *s1, char const *s2);
-char *ft_substr(char const *s, unsigned int start, size_t len);
-char *ft_strdup(char *str);
-char **ft_split_n(char const *s, char c);
-size_t ft_strlen(char *str);
-
+char	*get_next_line(int fd);
+char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_strdup(char *str);
+char	**ft_split_n(char const *s, char c);
+size_t	ft_strlen(char *str);
 
 #endif
