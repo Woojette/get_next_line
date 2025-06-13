@@ -25,7 +25,7 @@ char	*ft_return(char *str)
 	if (str[i] == '\n')
 		i++;
 	newstr = malloc(sizeof(char) * (i + 1));
-	if (newstr == NULL)
+	if (!newstr)
 		return (NULL);
 	while (j < i)
 	{
@@ -58,7 +58,7 @@ char	*ft_reste(char *str)
 	// 	return (NULL);
 	// printf("n:%d,i:%d\n", n, i);
 	reststr = malloc(sizeof(char) * (i - n + 1));
-	if (reststr == NULL)
+	if (!reststr)
 		return (NULL);
 	while (str[n] != '\0')
 	{
@@ -130,7 +130,7 @@ char	*get_next_line(int fd)
         str[0] = '\0';
     }
 	charread = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (charread == NULL)
+	if (!charread)
 		return (NULL);
 	fdread = read(fd, charread, BUFFER_SIZE);
 	if (fdread == -1)
@@ -144,6 +144,8 @@ char	*get_next_line(int fd)
 		// else
 		// {
 			temp = ft_strjoin(str, charread);
+			if (!temp)
+				return (NULL);
 			free(str);
 			str = temp;
 		// }
