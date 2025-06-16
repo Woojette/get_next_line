@@ -65,20 +65,52 @@ char	*ft_reste(char *str)
 	return (reststr);
 }
 
-int	ft_check(char *str, char c)
+int	my_read(int fd, int *fdread, char **charread, char **str)
 {
-	int	i;
+	char	*temp;
 
-	i = 0;
-	while (str[i])
+	while (*fdread > 0)
 	{
-		if (str[i] == c)
-			return (1);
-		i++;
+		(*charread)[*fdread] = '\0';
+		temp = ft_strjoin(*str, *charread);
+		if (!temp)
+		{
+			free(*str);
+			free(*charread);
+			return (-1);
+		}
+		free(*str);
+		*str = temp;
+		if (ft_check(*str, '\n') == 1)
+			break ;
+		*fdread = read(fd, *charread, BUFFER_SIZE);
+		if (*fdread == -1)
+		{
+			free(*str);
+			*str = NULL;
+			free(*charread);
+			return (-1);
+		}
 	}
+	free(*charread);
 	return (0);
 }
 
+int	checks(int fd, char **str)
+{
+	if (fd < 0 || BUFFER_SIZE <= 0)
+	{
+		free(*str);
+		*str = NULL;
+		return (-1);
+	}
+	if (!*str)
+	{
+		*str = malloc(sizeof(char) * 1);
+		(*str)[0] = '\0';
+	}
+	return (0);
+}
 
 char	*get_next_line(int fd)
 {
@@ -88,38 +120,21 @@ char	*get_next_line(int fd)
 	char		*strreturn;
 	static char	*str;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
-	{
-		free(str);
-		str = NULL;
+	if (checks(fd, &str) == -1)
 		return (NULL);
-	}
-	if (!str)
-	{
-		str = malloc(sizeof(char) * 1);
-		str[0] = '\0';
-	}
 	charread = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!charread)
 		return (NULL);
 	fdread = read(fd, charread, BUFFER_SIZE);
 	if (fdread == -1)
-		return (free(str), str = NULL, free(charread), NULL);
-	while (fdread > 0)
 	{
-		charread[fdread] = '\0';
-		temp = ft_strjoin(str, charread);
-		if (!temp)
-			return (free(str), free(charread), NULL);
 		free(str);
-		str = temp;
-		if (ft_check(str, '\n') == 1)
-			break ;
-		fdread = read(fd, charread, BUFFER_SIZE);
-		if (fdread == -1)
-			return (free(str), str = NULL, free(charread), NULL);
+		str = NULL;
+		free(charread);
+		return (NULL);
 	}
-	free(charread);
+	if (my_read(fd, &fdread, &charread, &str) == -1)
+		return (NULL);
 	if (fdread == 0 && (str[0] == '\0' || !str))
 	{
 		if (str)

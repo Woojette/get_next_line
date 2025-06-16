@@ -67,19 +67,16 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (newlist);
 }
 
-char	*ft_calloc(int size)
+int	ft_check(char *str, char c)
 {
-	int		i;
-	char	*newcalloc;
+	int	i;
 
 	i = 0;
-	newcalloc = malloc(sizeof(char) * (size));
-	if (!newcalloc)
-		return (NULL);
-	while (i < size)
+	while (str[i])
 	{
-		newcalloc[i] = 0;
+		if (str[i] == c)
+			return (1);
 		i++;
 	}
-	return (newcalloc);
+	return (0);
 }
