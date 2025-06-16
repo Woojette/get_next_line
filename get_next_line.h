@@ -6,7 +6,7 @@
 /*   By: wooyang <wooyang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 14:46:29 by wooyang           #+#    #+#             */
-/*   Updated: 2025/06/11 14:51:43 by wooyang          ###   ########.fr       */
+/*   Updated: 2025/06/16 12:04:27 by wooyang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,8 @@
 # endif
 
 char	*get_next_line(int fd);
-// char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strdup(char *str);
-// size_t	ft_strlen(char *str);
-int	ft_strlen(char *str);
+int		ft_strlen(char *str);
 
 #endif
