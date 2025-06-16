@@ -30,5 +30,5 @@ char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strdup(char *str);
 int		ft_strlen(char *str);
 int		ft_check(char *str, char c);
-
+char	*ft_reste(char *str);
 #endif

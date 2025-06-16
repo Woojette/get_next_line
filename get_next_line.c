@@ -36,35 +36,6 @@ char	*ft_return(char *str)
 	return (newstr);
 }
 
-char	*ft_reste(char *str)
-{
-	int		i;
-	int		n;
-	int		j;
-	char	*reststr;
-
-	i = 0;
-	n = 0;
-	j = 0;
-	while (str[i] != '\0')
-		i++;
-	while (str[n] != '\n' && n < i)
-		n++;
-	if (str[n] == '\n')
-		n++;
-	reststr = malloc(sizeof(char) * (i - n + 1));
-	if (!reststr)
-		return (NULL);
-	while (str[n] != '\0')
-	{
-		reststr[j] = str[n];
-		j++;
-		n++;
-	}
-	reststr[j] = '\0';
-	return (reststr);
-}
-
 int	my_read(int fd, int *fdread, char **charread, char **str)
 {
 	char	*temp;
@@ -99,9 +70,29 @@ int	checks(int fd, char **str)
 	return (0);
 }
 
+int	ft_test_null(char **charread, int *fd, char **str)
+{
+	int	fdread;
+
+	*charread = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!(*charread))
+		return (-1);
+	fdread = read(*fd, *charread, BUFFER_SIZE);
+	if (fdread == -1)
+		return (free(*str), *str = NULL, free(*charread), -1);
+	if (my_read(*fd, &fdread, charread, str) == -1)
+		return (-1);
+	if (fdread == 0 && ((*str)[0] == '\0' || !(*str)))
+	{
+		if (*str)
+			return (free(*str), *str = NULL, -1);
+		return (-1);
+	}
+	return (0);
+}
+
 char	*get_next_line(int fd)
 {
-	int			fdread;
 	char		*charread;
 	char		*temp;
 	char		*strreturn;
@@ -109,29 +100,14 @@ char	*get_next_line(int fd)
 
 	if (checks(fd, &str) == -1)
 		return (NULL);
-	// Mettre dans la fonction checks
-	charread = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!charread)
+	if (ft_test_null(&charread, &fd, &str) == -1)
 		return (NULL);
-	fdread = read(fd, charread, BUFFER_SIZE);
-	if (fdread == -1)
-	{
-		free(str);
-		str = NULL;
-		free(charread);
-		return (NULL);
-	}
-
-	if (my_read(fd, &fdread, &charread, &str) == -1)
-		return (NULL);
-	if (fdread == 0 && (str[0] == '\0' || !str))
-	{
-		if (str)
-			return (free(str), str = NULL, NULL);
-		return (NULL);
-	}
 	strreturn = ft_return(str);
+	if (!strreturn)
+		return (NULL);
 	temp = ft_reste(str);
+	if (!temp)
+		return (NULL);
 	free(str);
 	str = temp;
 	if (str && str[0] == '\0')
