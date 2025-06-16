@@ -74,23 +74,14 @@ int	my_read(int fd, int *fdread, char **charread, char **str)
 		(*charread)[*fdread] = '\0';
 		temp = ft_strjoin(*str, *charread);
 		if (!temp)
-		{
-			free(*str);
-			free(*charread);
-			return (-1);
-		}
+			return (free(*str), *str = NULL, free(*charread), -1);
 		free(*str);
 		*str = temp;
 		if (ft_check(*str, '\n') == 1)
 			break ;
 		*fdread = read(fd, *charread, BUFFER_SIZE);
 		if (*fdread == -1)
-		{
-			free(*str);
-			*str = NULL;
-			free(*charread);
-			return (-1);
-		}
+			return (free(*str), *str = NULL, free(*charread), -1);
 	}
 	free(*charread);
 	return (0);
@@ -99,11 +90,7 @@ int	my_read(int fd, int *fdread, char **charread, char **str)
 int	checks(int fd, char **str)
 {
 	if (fd < 0 || BUFFER_SIZE <= 0)
-	{
-		free(*str);
-		*str = NULL;
-		return (-1);
-	}
+		return (free(*str), *str = NULL, -1);
 	if (!*str)
 	{
 		*str = malloc(sizeof(char) * 1);
@@ -122,6 +109,7 @@ char	*get_next_line(int fd)
 
 	if (checks(fd, &str) == -1)
 		return (NULL);
+	// Mettre dans la fonction checks
 	charread = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!charread)
 		return (NULL);
@@ -133,6 +121,7 @@ char	*get_next_line(int fd)
 		free(charread);
 		return (NULL);
 	}
+
 	if (my_read(fd, &fdread, &charread, &str) == -1)
 		return (NULL);
 	if (fdread == 0 && (str[0] == '\0' || !str))
