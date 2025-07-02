@@ -121,6 +121,11 @@ char	*get_next_line(int fd)
 // 	char	*str;
 
 // 	fd = open("texte.txt", O_RDONLY);
+//	if (fd == -1)
+//  {
+//		printf("Error\n");
+//		return (1);
+//  }
 // 	str = get_next_line(fd);
 // 	while (str)
 // 	{
