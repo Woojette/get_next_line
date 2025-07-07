@@ -65,6 +65,8 @@ int	checks(int fd, char **str)
 	if (!*str)
 	{
 		*str = malloc(sizeof(char) * 1);
+		if (str == NULL)
+			return (-1);
 		(*str)[0] = '\0';
 	}
 	return (0);
@@ -79,7 +81,7 @@ int	ft_test_null(char **charread, int *fd, char **str)
 		return (-1);
 	fdread = read(*fd, *charread, BUFFER_SIZE);
 	if (fdread == -1)
-		return (free(*str), *str = NULL, free(*charread), -1);
+		return (free(*str), *str = NULL, free(*charread), *charread = NULL, -1);
 	if (my_read(*fd, &fdread, charread, str) == -1)
 		return (-1);
 	if (fdread == 0 && ((*str)[0] == '\0' || !(*str)))
@@ -101,10 +103,10 @@ char	*get_next_line(int fd)
 	if (checks(fd, &str) == -1)
 		return (NULL);
 	if (ft_test_null(&charread, &fd, &str) == -1)
-		return (NULL);
+		return (free(str), str = NULL, NULL);
 	strreturn = ft_return(str);
 	if (!strreturn)
-		return (NULL);
+		return (free(str), str = NULL, NULL);
 	temp = ft_reste(str);
 	if (!temp)
 		return (NULL);
@@ -121,11 +123,11 @@ char	*get_next_line(int fd)
 // 	char	*str;
 
 // 	fd = open("texte.txt", O_RDONLY);
-//	if (fd == -1)
-//  {
-//		printf("Error\n");
-//		return (1);
-//  }
+// 	if (fd == -1)
+//  	{
+// 		printf("Error\n");
+// 		return (1);
+//  	}
 // 	str = get_next_line(fd);
 // 	while (str)
 // 	{
